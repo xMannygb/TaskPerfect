@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Task Perfect — supplemental Info.plist.
+
+  Read PROJECT-SETUP.md §3 before using this file. Xcode 15+ generates Info.plist
+  from build settings by default (GENERATE_INFOPLIST_FILE = YES), and dropping a
+  file in without changing that setting means the file is ignored — silently. Two
+  valid routes are documented there; either works, but pick one deliberately.
+
+  Only keys that are NOT auto-generated appear here. Bundle identifier, version,
+  build number and the supported-platform keys stay in build settings where Xcode
+  can manage them.
+-->
+<plist version="1.0">
+<dict>
+
+	<!-- REQUIRED. Absent this key, iOS terminates the process the moment
+	     LAContext.evaluatePolicy runs — which is the first time anyone selects
+	     biometric unlock in Settings. Not a warning, not a failed prompt: a
+	     crash. AppLock.swift is the caller. -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Task Perfect uses Face ID to unlock your tasks without you retyping your Exchange password.</string>
+
+	<!-- The app uses only HTTPS via URLSession and Apple's own TLS, so it
+	     qualifies for the exemption. Declaring it here stops App Store Connect
+	     asking the export-compliance question on every single upload. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+
+	<!-- SwiftUI lifecycle app with no launch storyboard. An empty dict gives the
+	     system-drawn launch screen; without it, older behavior can letterbox. -->
+	<key>UILaunchScreen</key>
+	<dict/>
+
+	<!-- iPhone only, and the task list is a vertical thing. Change here if the
+	     build team wants landscape — nothing in the layout code assumes it. -->
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+
+	<!--
+	  Deliberately NOT here:
+
+	  NSAppTransportSecurity — the EWS endpoint is HTTPS with a valid public
+	  certificate. If a build ever seems to need an ATS exception to reach
+	  east.exch092.serverdata.net, the real problem is a proxy or a
+	  TLS-inspecting firewall on that network, and an exception would hide it
+	  while weakening every other connection the app makes.
+
+	  UIBackgroundModes — nothing runs in the background. Sync happens on launch,
+	  on pull-to-refresh, and on reconnect while the app is foreground. Adding a
+	  background mode without a real use is an App Review rejection.
+
+	  NSUserNotificationsUsageDescription — no such key exists. Notification
+	  permission is requested at runtime through UNUserNotificationCenter
+	  (AppBadge.swift); there is no Info.plist string for it.
+	-->
+
+</dict>
+</plist>

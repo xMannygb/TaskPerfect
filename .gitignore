@@ -1,0 +1,58 @@
+# Xcode — per-user state. Committing these means every teammate's window layout,
+# breakpoints and scheme selection fight each other in every pull.
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+*.xcscmblueprint
+*.xccheckout
+
+# Keep: *.xcodeproj/project.pbxproj and xcshareddata/ — those ARE the project.
+# Only the xcuserdata inside them is noise, and the rules above cover it.
+
+# Build products
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager. Package.resolved is intentionally NOT ignored — it pins
+# dependency versions, so committing it is what makes a build reproducible.
+.build/
+.swiftpm/xcode/package.xcworkspace/xcuserdata/
+Packages/
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Fastlane, if it ever gets used
+fastlane/report.xml
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Signing material — should never be in the repo at all
+*.mobileprovision
+*.p12
+*.cer
+*.certSigningRequest
+
+# Local secrets. Nothing in this project needs them today: the server host lives
+# in ServerConfig defaults, and the password lives in the Keychain at runtime.
+# Here so that if that ever changes, the file is already excluded.
+*.local.xcconfig
+Secrets.swift
+.env
