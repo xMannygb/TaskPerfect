@@ -517,7 +517,7 @@ public struct TaskDetailView: View {
                 // The controls appear with the toggle rather than sitting inert
                 // above a plain note: a row of nine dimmed buttons is more
                 // confusing than no buttons at all.
-                RichNotesEditor(body: $draft.body)
+                RichNotesEditor(note: $draft.body)
                     .frame(minHeight: 160)
                     .listRowInsets(EdgeInsets())
             } else {

@@ -119,6 +119,9 @@ public struct CategoryEditorView: View {
 
     // MARK: Subject text
 
+    // Two sibling Sections, so the result-builder transform has to be asked for
+    // explicitly — without it there is no single expression to return.
+    @ViewBuilder
     private var subjectTextSection: some View {
         Section {
             // Default sits first and is plain black — the requested default, not

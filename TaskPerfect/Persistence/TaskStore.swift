@@ -565,7 +565,7 @@ public final class TaskStore {
         autoSyncTask?.cancel()
         autoSyncTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(2))
-            guard !Task.isCanceled else { return }
+            guard !Task.isCancelled else { return }
             await self?.syncChanges()
         }
     }
@@ -1351,8 +1351,11 @@ public extension TaskStore {
             return assignedSections(source, options: options,
                                     descending: options.grouping == .assignedZA, urgent: true)
 
-        // Completion grouping isn't offered here.
-        case .ungrouped, .completionDate:
+        // Completion grouping isn't offered here. Horizon belongs with them
+        // rather than with .dueDate: every task in this tab is already in the
+        // past, so the horizon classifier puts all of them under one Overdue
+        // heading — which is exactly the single section built below.
+        case .ungrouped, .completionDate, .horizon:
             return [DueSection(group: .overdue,
                                tasks: options.sorted(source, order: order),
                                forcesUrgent: true)]

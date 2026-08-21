@@ -9,6 +9,11 @@ import UIKit
 /// that reasonably well; what it writes back is verbose but valid, and Outlook
 /// renders it. Bullets and bold survive a round trip through Outlook; specific
 /// colors and sizes often don't.
+///
+/// `@MainActor` because most of these take a `UITextView`, and UIKit is
+/// main-actor-isolated under Swift 6. Every caller is `RichNotesEditor`'s
+/// coordinator, which is already on the main actor, so this costs nothing.
+@MainActor
 enum RichTextFormatter {
 
     // MARK: Conversion

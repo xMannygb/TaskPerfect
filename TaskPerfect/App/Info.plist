@@ -15,6 +15,27 @@
 <plist version="1.0">
 <dict>
 
+	<!-- These do come from build settings, but the substitution only happens if
+	     the keys are present here to be substituted into. Omitting them entirely
+	     builds successfully and then fails at install with "Missing bundle ID",
+	     which reads like a signing problem and isn't one. -->
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+
 	<!-- REQUIRED. Absent this key, iOS terminates the process the moment
 	     LAContext.evaluatePolicy runs — which is the first time anyone selects
 	     biometric unlock in Settings. Not a warning, not a failed prompt: a

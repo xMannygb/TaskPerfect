@@ -1,0 +1,67 @@
+# Task Perfect — XcodeGen spec.
+#
+# PROJECT-SETUP.md deliberately keeps a .xcodeproj out of the repo, on the
+# grounds that a hand-written project file is worse than none. This is the
+# other way to satisfy that concern: the settings live in reviewable YAML and
+# the .xcodeproj is generated, never edited, and gitignored.
+#
+#     brew install xcodegen && xcodegen generate
+#
+# Every build setting below is from PROJECT-SETUP.md §5 unless noted.
+
+name: TaskPerfect
+options:
+  bundleIdPrefix: com.taskperfect
+  deploymentTarget: { iOS: "17.0" }   # SwiftData, @Observable, Tab-era SwiftUI
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete    # the code is written for it
+    TARGETED_DEVICE_FAMILY: "1"           # iPhone only
+    SUPPORTS_MAC_DESIGNED_FOR_IPHONE: NO  # untested; Keychain ACLs differ
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    DEAD_CODE_STRIPPING: YES
+
+targets:
+  TaskPerfect:
+    type: application
+    platform: iOS
+    sources:
+      # Info.plist is referenced through INFOPLIST_FILE below, not bundled as a
+      # resource; the .md files are documentation and belong out of the binary.
+      - path: TaskPerfect
+        excludes:
+          - "Tests/**"
+          - "VerifyEWS/**"
+          - "**/*.md"
+          - "App/Info.plist"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.taskperfect.TaskPerfect
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        # PROJECT-SETUP.md §3, Route A — use the supplied plist rather than
+        # synthesising one, so NSFaceIDUsageDescription stays in version control.
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: TaskPerfect/App/Info.plist
+        # Simulator-only for now; device signing is a separate decision (§6).
+        CODE_SIGNING_ALLOWED: NO
+    scheme:
+      testTargets:
+        - TaskPerfectTests
+      gatherCoverageData: false
+
+  TaskPerfectTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: TaskPerfect/Tests
+        excludes: ["**/*.md"]
+    dependencies:
+      - target: TaskPerfect
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGNING_ALLOWED: NO
