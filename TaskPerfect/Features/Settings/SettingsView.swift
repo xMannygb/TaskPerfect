@@ -425,19 +425,12 @@ public struct SettingsView: View {
             }
         }
     }
-}
-
-#Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings())
-    return NavigationStack { SettingsView() }
-        .environment(store)
-        .task { await store.load() }
 
     /// Names the current scope, so the common case is answerable without opening
     /// the screen.
     private var searchFieldsSummary: String {
         let names = SearchField.allCases
-            .filter { settings.searches($0) }
+            .filter { store.settings.searches($0) }
             .map(\.title)
         // Instruction first, state second. The names alone read as a label for
         // the row rather than as something you can change; the em dash keeps
@@ -445,4 +438,11 @@ public struct SettingsView: View {
         return "Select the fields you want the Search Bar to search in each tab — currently "
             + names.joined(separator: ", ") + "."
     }
+}
+
+#Preview {
+    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings())
+    return NavigationStack { SettingsView() }
+        .environment(store)
+        .task { await store.load() }
 }

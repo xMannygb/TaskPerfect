@@ -6,8 +6,11 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 
-# Keep: *.xcodeproj/project.pbxproj and xcshareddata/ — those ARE the project.
-# Only the xcuserdata inside them is noise, and the rules above cover it.
+# The project is now generated from project.yml by XcodeGen, so the .xcodeproj is
+# a build product rather than a source of truth — ignored, and regenerated with
+# `xcodegen generate`. project.yml is the reviewable thing; edit that, not the
+# .pbxproj, or the next generate silently discards the change.
+*.xcodeproj/
 
 # Build products
 build/

@@ -8,7 +8,9 @@ struct TaskPerfectApp: App {
     /// One container for the app's lifetime. Failing to build it is fatal —
     /// running without persistence would silently drop offline work, which is
     /// worse than not starting.
-    private static let container: ModelContainer = {
+    // `fileprivate`, not `private`: Session.makeStore() below reads this, and it is
+    // a separate type in this file, which `private` does not reach.
+    fileprivate static let container: ModelContainer = {
         do {
             return try ModelContainer(
                 for: CachedTask.self, CachedCategory.self,

@@ -210,7 +210,9 @@ public extension CategoryTextStyle {
     ///
     /// - Parameter forcingBold: an overdue row is bold regardless of the
     ///   category's own setting.
-    func font(forcingBold: Bool, emphasis: TPTask.Emphasis = .init()) -> Font {
+    // `internal`, not the extension's implicit `public`: TPTask.Emphasis is an
+    // internal type, so a public signature cannot name it or default it.
+    internal func font(forcingBold: Bool, emphasis: TPTask.Emphasis = .init()) -> Font {
         // The per-task override wins over the category, and `nil` falls back to
         // it — which is what lets a task in a bold category be set explicitly
         // non-bold.

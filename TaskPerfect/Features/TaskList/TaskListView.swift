@@ -339,7 +339,7 @@ public struct TaskListView: View {
                             Text("Clear").fontWeight(.semibold)
                         }
                         .font(.footnote)
-                        .foregroundStyle(Theme.Palette.navy)
+                        .foregroundStyle(Theme.Palette.undated)
                     }
                 }
             }

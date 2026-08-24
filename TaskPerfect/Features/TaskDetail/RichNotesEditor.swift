@@ -12,14 +12,16 @@ import UIKit
 /// behave the way people expect.
 struct RichNotesEditor: View {
 
-    @Binding var body: TPBody
+    /// Named `note`, not `body`: `View` already requires a `body`, and a
+    /// stored property of that name is a redeclaration of it.
+    @Binding var note: TPBody
     @State private var coordinatorBox = CoordinatorBox()
 
     var body: some View {
         VStack(spacing: 0) {
             toolbar
             Divider()
-            TextViewBridge(body: $body, box: coordinatorBox)
+            TextViewBridge(body: $note, box: coordinatorBox)
                 .frame(minHeight: 120)
         }
     }
@@ -125,6 +127,7 @@ enum RichTextCommand {
 
 /// Lets the SwiftUI toolbar reach the live `UITextView` without the view itself
 /// owning UIKit state.
+@MainActor
 @Observable
 final class CoordinatorBox {
     weak var textView: UITextView?

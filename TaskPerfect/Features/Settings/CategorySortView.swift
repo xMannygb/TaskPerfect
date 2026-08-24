@@ -233,6 +233,10 @@ public struct CategorySortView: View {
             }
         case .completionDate:
             return "One section per day you finished something, most recent first. Exchange doesn't always record a completion date — those tasks go to a section at the bottom."
+        case .assignedAZ, .assignedZA:
+            // Unassigned sorts last in either direction — see
+            // TaskStore.assignedSections, where it short-circuits the comparator.
+            return "One section per person, from Assigned To. Tasks with nobody assigned go to a section at the bottom, whichever direction you pick."
         case .category:
             return "One section per category. A task with two categories appears once, under the first one it carries — groups are a partition, so overlapping them would make the counts exceed your task total."
         case .ungrouped:
@@ -245,14 +249,7 @@ public struct CategorySortView: View {
             if target == .today {
                 return "A single list, with overdue tasks pinned at the top. Everything else is due today, so a name or category order is what's left to rank by."
             }
-            if target == .completed {
-            switch options.wrappedValue.grouping {
-            case .completionDate: return CategorySortOptions.SortLevel.forCompletedByCompletion
-            case .dueDate:        return CategorySortOptions.SortLevel.forCompletedByDue
-            default:              return CategorySortOptions.SortLevel.forCompletedUngrouped
-            }
-        }
-        if target == .noCategory {
+            if target == .noCategory {
                 return "A single list, though overdue tasks stay pinned at the top and tasks with no due date keep the placement set in Display settings."
             }
             return target == .overdue
