@@ -55,5 +55,8 @@ public struct SearchFieldsView: View {
 
 #Preview {
     NavigationStack { SearchFieldsView() }
-        .environment(TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings()))
+        .environment(TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings(),
+            reachability: Reachability()
+                              )
+                     )
 }

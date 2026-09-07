@@ -205,8 +205,10 @@ public struct CategoryManagerView: View {
 }
 
 #Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings())
-    return NavigationStack { CategoryManagerView() }
+    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings(),
+        reachability: Reachability()
+    )
+    NavigationStack { CategoryManagerView() }
         .environment(store)
         .task { await store.load() }
 }

@@ -177,9 +177,14 @@ final class Session {
         let store = TaskStore(
             backend: MockBackend(),
             settings: settings,
-            local: LocalStore(modelContainer: TaskPerfectApp.container)
+            local: LocalStore(modelContainer: TaskPerfectApp.container),
+            reachability: Reachability()
         )
-        Task { await store.loadFromDisk() }
+
+        Task {
+            await store.load()
+        }
+
         return store
     }
 

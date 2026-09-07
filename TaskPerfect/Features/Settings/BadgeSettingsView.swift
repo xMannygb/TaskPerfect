@@ -123,8 +123,10 @@ public struct BadgeSettingsView: View {
 }
 
 #Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings())
-    return NavigationStack { BadgeSettingsView() }
+    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings(),
+        reachability: Reachability()
+    )
+    NavigationStack { BadgeSettingsView() }
         .environment(store)
         .task { await store.load() }
 }

@@ -269,8 +269,10 @@ public struct CategorySortView: View {
 }
 
 #Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings())
-    return NavigationStack { CategorySortView() }
+    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings(),
+        reachability: Reachability()
+    )
+    NavigationStack { CategorySortView() }
         .environment(store)
         .task { await store.load() }
 }

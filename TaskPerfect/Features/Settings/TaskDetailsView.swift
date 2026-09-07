@@ -81,6 +81,14 @@ public struct TaskDetailsView: View {
 }
 
 #Preview {
-    NavigationStack { TaskDetailsView() }
-        .environment(TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings()))
+    NavigationStack {
+        TaskDetailsView()
+    }
+    .environment(
+        TaskStore(
+            backend: MockBackend(latency: .zero),
+            settings: AppSettings(),
+            reachability: Reachability()
+        )
+    )
 }

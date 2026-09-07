@@ -611,10 +611,17 @@ public struct TaskDetailView: View {
 }
 
 #Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero))
-    return NavigationStack {
+    let store = TaskStore(
+        backend: MockBackend(latency: .zero),
+        settings: AppSettings(),
+        reachability: Reachability()
+    )
+
+    NavigationStack {
         TaskDetailView(task: MockFixtures.tasks[2])
     }
     .environment(store)
-    .task { await store.load() }
+    .task {
+        await store.load()
+    }
 }

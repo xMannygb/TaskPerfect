@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 
 /// In-memory source of truth for the UI.
 ///
@@ -91,9 +92,9 @@ public final class TaskStore {
 
     public init(
         backend: any TaskBackend,
-        settings: AppSettings = AppSettings(),
+        settings: AppSettings,
         local: LocalStore? = nil,
-        reachability: Reachability = Reachability()
+        reachability: Reachability
     ) {
         self.backend = backend
         self.settings = settings

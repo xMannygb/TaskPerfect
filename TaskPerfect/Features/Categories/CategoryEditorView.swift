@@ -273,8 +273,17 @@ public struct CategoryEditorView: View {
 }
 
 #Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings())
-    return NavigationStack { CategoryEditorView(category: nil) }
-        .environment(store)
-        .task { await store.load() }
+    let store = TaskStore(
+        backend: MockBackend(latency: .zero),
+        settings: AppSettings(),
+        reachability: Reachability()
+    )
+
+    NavigationStack {
+        CategoryEditorView(category: nil)
+    }
+    .environment(store)
+    .task {
+        await store.load()
+    }
 }

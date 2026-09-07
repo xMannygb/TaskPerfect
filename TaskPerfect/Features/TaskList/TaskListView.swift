@@ -64,6 +64,13 @@ public struct TaskListView: View {
 
         NavigationStack {
             VStack(spacing: 0) {
+                Image("TaskPerfectLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 250, height: 60)
+                    .padding(.top, 8)
+                    .padding(.bottom, 6)
+
                 tabBar
                 // The strip auto-scrolls the active pill into view, but a
                 // hand-scrolled strip can leave it off-screen — with fourteen
@@ -971,8 +978,9 @@ public struct TaskListView: View {
 }
 
 #Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero))
-    return TaskListView()
+    let store = TaskStore(backend: MockBackend(latency: .zero),settings: AppSettings(),
+                          reachability: Reachability())
+    TaskListView()
         .environment(store)
         .task { await store.load() }
 }
@@ -1012,7 +1020,11 @@ private struct UndoBar: View {
         // threshold commits; release short of it springs back. Downward only:
         // an accidental sideways swipe shouldn't end the window.
         .offset(y: max(0, dragOffset))
-        .opacity(dragOffset > 0 ? max(0, 1 - dragOffset / 140) : 1)
+        .opacity(
+            dragOffset > 0
+                ? max(0.0, 1.0 - Double(dragOffset / 140.0))
+                : 1.0
+        )
         .gesture(
             DragGesture(minimumDistance: 6)
                 .onChanged { value in

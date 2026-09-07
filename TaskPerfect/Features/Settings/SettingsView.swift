@@ -441,8 +441,10 @@ public struct SettingsView: View {
 }
 
 #Preview {
-    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings())
-    return NavigationStack { SettingsView() }
+    let store = TaskStore(backend: MockBackend(latency: .zero), settings: AppSettings(),
+        reachability: Reachability()
+    )
+    NavigationStack { SettingsView() }
         .environment(store)
         .task { await store.load() }
 }
