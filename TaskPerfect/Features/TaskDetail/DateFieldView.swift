@@ -38,11 +38,11 @@ public struct DateFieldView: View {
             } label: {
                 HStack {
                     Text(title)
-                        .foregroundStyle(Theme.Palette.ink)
+                        .foregroundStyle(.primary)
                     Spacer()
                     Text(display)
                         .font(Theme.numeric(16))
-                        .foregroundStyle(date == nil ? Theme.Palette.slate : Theme.Palette.ink)
+                        .foregroundStyle(date == nil ? Theme.Palette.slate : Color.primary)
                     Image(systemName: "chevron.right")
                         .font(.caption2)
                         .foregroundStyle(Theme.Palette.slate)

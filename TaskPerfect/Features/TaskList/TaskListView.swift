@@ -438,12 +438,12 @@ public struct TaskListView: View {
                             Image(systemName: "chevron.down")
                                 .font(.system(size: 9, weight: .bold))
                                 .rotationEffect(.degrees(isCollapsed(section) ? -90 : 0))
-                                .foregroundStyle(headingColor(for: section))
+                                .foregroundStyle(.primary)
                         }
                         Text(section.group.title.uppercased())
                             .font(.system(size: 12, weight: .bold))
                             .tracking(0.6)
-                            .foregroundStyle(headingColor(for: section))
+                            .foregroundStyle(.primary)
                         Spacer()
                         // The full count, not the visible one — a collapsed
                         // section should still say how much is inside.

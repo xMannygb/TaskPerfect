@@ -36,7 +36,6 @@ public struct CategorySpine: View {
 }
 
 /// Compact category label for the detail screen and filter menu, where there is
-/// room for names and the spine's density is no longer the priority.
 public struct CategoryChip: View {
 
     let category: TPCategory
@@ -57,7 +56,7 @@ public struct CategoryChip: View {
                 )
             Text(category.name)
                 .font(.subheadline)
-                .foregroundStyle(Theme.Palette.ink)
+                .foregroundStyle(.primary)
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)

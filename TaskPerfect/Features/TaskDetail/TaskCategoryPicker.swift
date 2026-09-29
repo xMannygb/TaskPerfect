@@ -26,7 +26,7 @@ struct TaskCategoryPicker: View {
                             Spacer()
                             if selected.contains(category.name) {
                                 Image(systemName: "checkmark")
-                                    .foregroundStyle(Theme.Palette.ink)
+                                    .foregroundStyle(.primary)
                             }
                         }
                     }

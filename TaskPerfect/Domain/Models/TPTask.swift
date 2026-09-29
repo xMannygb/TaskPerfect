@@ -300,7 +300,12 @@ public extension TPTask {
     /// True only for incomplete tasks whose due date is in the past.
     func isOverdue(reference: Date = Date()) -> Bool {
         guard !isComplete, let due = dueDate else { return false }
-        return due < reference
+
+        let calendar = Calendar.current
+        let dueDay = calendar.startOfDay(for: due)
+        let today = calendar.startOfDay(for: reference)
+
+        return dueDay < today
     }
 
     /// Has the item ever been persisted to Exchange?

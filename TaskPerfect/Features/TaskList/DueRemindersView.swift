@@ -31,7 +31,7 @@ struct DueRemindersView: View {
                         VStack(alignment: .leading, spacing: 3) {
                             Text(task.subject.isEmpty ? "Untitled task" : task.subject)
                                 .font(.body)
-                                .foregroundStyle(Theme.Palette.ink)
+                                .foregroundStyle(.primary)
                             if let due = task.reminderDueBy {
                                 Text(Self.relative(due))
                                     .font(.caption)
