@@ -64,12 +64,6 @@ public struct TaskListView: View {
 
         NavigationStack {
             VStack(spacing: 0) {
-                Image("TaskPerfectLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 250, height: 60)
-                    .padding(.top, 8)
-                    .padding(.bottom, 6)
 
                 tabBar
                 // The strip auto-scrolls the active pill into view, but a

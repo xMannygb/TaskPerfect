@@ -38,6 +38,7 @@ struct TaskPerfectApp: App {
                         .environment(store)
                 }
             }
+            .preferredColorScheme(.light)
             .environment(session)
             .task { await session.restore() }
         }
@@ -135,17 +136,32 @@ final class Session {
             return
         }
 
-        username = credentials.username
-        CredentialStore.rememberedUsername = credentials.username
-        CredentialStore.save(
-            password: credentials.password,
-            username: credentials.username,
-            mode: settings.lockMode
-        )
 
         // TODO: replace MockBackend with EWSBackend. Build order and the one
         // unproven operation (the CategoryList write) are in BEFORE-EWS.md.
-        state = .signedIn(makeStore())
+        Task {
+            do {
+                let backend = EWSBackend(
+                    username: credentials.username,
+                    password: credentials.password
+                )
+
+                try await backend.verifyConnection()
+                let tasks = try await backend.fetchTasks()
+                print("Exchange tasks retrieved: \(tasks.count)")
+                username = credentials.username
+                CredentialStore.rememberedUsername = credentials.username
+                CredentialStore.save(
+                    password: credentials.password,
+                    username: credentials.username,
+                    mode: settings.lockMode
+                )
+                
+                state = .signedIn(makeStore(backend: backend))
+            } catch {
+                unlockError = "Exchange connection failed: \(error.localizedDescription)"
+            }
+        }
     }
 
     /// Re-store the password under the protection the new mode requires.
@@ -173,9 +189,11 @@ final class Session {
 
     /// Build a store backed by the on-disk cache, then load from it before any
     /// network call — that's what makes a cold offline launch show the full list.
-    private func makeStore() -> TaskStore {
+    private func makeStore(
+        backend: any TaskBackend = MockBackend()
+    ) -> TaskStore {
         let store = TaskStore(
-            backend: MockBackend(),
+            backend: backend,
             settings: settings,
             local: LocalStore(modelContainer: TaskPerfectApp.container),
             reachability: Reachability()
@@ -187,7 +205,6 @@ final class Session {
 
         return store
     }
-
     func signOut() {
         if let username { CredentialStore.delete(username: username) }
         CredentialStore.rememberedUsername = nil
